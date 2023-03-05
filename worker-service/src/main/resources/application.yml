@@ -1,0 +1,31 @@
+server:
+  port: 8080
+
+spring:
+  datasource:
+    driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
+    url: jdbc:sqlserver://${db_host:localhost:1433};databaseName=${db_name:neo_service_worker}
+    username: ${db_username:SA}
+    password: ${db_password}
+  profiles:
+    active: local
+  jackson:
+    default-property-inclusion: non_null
+  jpa:
+    properties:
+      hibernate:
+        proc:
+          param_null_passing: true
+    hibernate:
+      naming:
+        implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyJpaImpl
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+
+logging:
+  config: classpath:logback/logback-${spring.profiles.active}.xml
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "loggers, info, health"
